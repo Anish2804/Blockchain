@@ -1,0 +1,55 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_34-7dbddab59a46a55d2beddcf8424bc74be85c701d",
+  "solcVersion": "0.8.34",
+  "solcLongVersion": "0.8.34+commit.80d5c536",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.19.0"
+  },
+  "userSourceNameMap": {
+    "contracts/sodaVendor.sol": "project/contracts/sodaVendor.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "osaka",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/IoraclePrice.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.34;\n\n\ninterface IoraclePrice{\n    function getPrice() external view returns(uint); \n}"
+      },
+      "project/contracts/Ownable.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.34;\n\ncontract Ownable{\n\n    address public owner;\n\n    constructor(){\n        owner = msg.sender;\n    }\n\n    event OwnerShipTransfer(address indexed previousOwner,address indexed newOwner);\n\n    modifier onlyOwner(){\n        require(msg.sender==owner,\"You are not the owner\");\n        _;\n    }\n\n    function transferOwnerShip(address _newOwner) public virtual onlyOwner{\n        require(_newOwner!=address(0),\"Invalid address\");\n        \n        emit OwnerShipTransfer(owner, _newOwner);\n        owner = _newOwner;\n\n    }\n}"
+      },
+      "project/contracts/sodaVendor.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.34;\n\nimport \"./IoraclePrice.sol\";\nimport \"./Ownable.sol\";\n\ncontract sodaVendor is IoraclePrice, Ownable{\n    \n    uint public  price;\n\n    constructor(){\n        price = 1 ether;\n    }\n\n    function getPrice() external view returns(uint) {\n        return price;\n    }\n\n    function setPrice(uint _price) public onlyOwner {\n        price = _price;\n    }\n}"
+      }
+    }
+  }
+}
